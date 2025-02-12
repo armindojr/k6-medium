@@ -1,0 +1,23 @@
+{
+  "stages": [
+    {
+      "_comment": "traffic ramp-up from 1 to 100 users over 1.25 minutes.",
+      "duration": "1.25m",
+      "target": 100
+    },
+    {
+      "_comment": "stay at 100 users for 7.5 minutes",
+      "duration": "7.5m",
+      "target": 100
+    },
+    {
+      "_comment": "ramp-down to 0 users",
+      "duration": "1.25m",
+      "target": 0
+    }
+  ],
+  "tags": {
+    "api_name": "Api example - Products",
+    "test_type": "load"
+  }
+}

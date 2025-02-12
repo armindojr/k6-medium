@@ -1,0 +1,53 @@
+networks:
+  common_network:
+
+services:
+  influxdb:
+    image: influxdb:1.11
+    networks:
+      - common_network
+    ports:
+      - 8086:8086
+    environment:
+      - INFLUXDB_DB=k6
+
+  grafana:
+    image: grafana/grafana:11.5.1
+    networks:
+      - common_network
+    ports:
+      - 4321:3000
+    environment:
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_BASIC_ENABLED=false
+    volumes:
+      - ./grafana:/etc/grafana/provisioning/
+
+  mitmproxy:
+    image: mitmproxy/mitmproxy
+    networks:
+      - common_network
+    ports:
+        - 8080:8080
+        - 9823:9823
+    command: mitmweb
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./mitmproxy:/home/mitmproxy/.mitmproxy
+
+  load-test:
+    image: grafana/k6:latest
+    tty: true
+    networks:
+      - common_network
+    ports:
+      - 6565:6565
+    environment:
+      - K6_OUT=influxdb=http://influxdb:8086/k6
+      - HTTP_PROXY=mitmproxy:8080
+      - HTTPS_PROXY=mitmproxy:8080
+      - K6_INSECURE_SKIP_TLS_VERIFY=true
+    volumes:
+      - ./src:/scripts

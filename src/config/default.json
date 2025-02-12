@@ -1,0 +1,9 @@
+{
+  "testFilters": {
+    "enabled": false,
+    "value": "default"
+  },
+  "env": {
+    "baseUrl": "http://backend:3001"
+  }
+}
