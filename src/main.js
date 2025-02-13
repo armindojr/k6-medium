@@ -1,5 +1,6 @@
 import { group } from 'k6';
 import getProducts from './specs/getProducts.spec.js';
+import getProductById from './specs/getProductById.spec.js';
 
 function loadSettings() {
   // Import default settings
@@ -29,7 +30,7 @@ function filterTests(arr, filterValue) {
 const settings = loadSettings();
 
 // Define the imported tests
-let importedTests = [getProducts];
+let importedTests = [getProducts, getProductById];
 
 // Define the array of tests to run
 let testsToRun = [];
